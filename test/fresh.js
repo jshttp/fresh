@@ -53,4 +53,38 @@ describe('fresh(reqHeader, resHeader)', function(){
     xdescribe('with invalid modified-since date');
     xdescribe('when last-modified is missing');
   })
+
+  describe('when requested with If-Modified-Since and If-None-Match', function(){
+    describe('when both match', function(){
+      it('should be fresh', function(){
+        var now = new Date;
+        var req = { 'if-none-match': 'tobi', 'if-modified-since': new Date(now - 2000).toUTCString() };
+        var res = { 'etag': 'tobi', 'last-modified': new Date(now - 4000).toUTCString() };
+        fresh(req, res).should.be.true;
+      })
+    })
+
+    describe('when only one matches', function(){
+      it('should be stale', function(){
+        var now = new Date;
+        var req = { 'if-none-match': 'tobi', 'if-modified-since': new Date(now - 4000).toUTCString() };
+        var res = { 'etag': 'tobi', 'last-modified': new Date(now - 2000).toUTCString() };
+        fresh(req, res).should.be.false;
+
+        var now = new Date;
+        var req = { 'if-none-match': 'tobi', 'if-modified-since': new Date(now - 2000).toUTCString() };
+        var res = { 'etag': 'luna', 'last-modified': new Date(now - 4000).toUTCString() };
+        fresh(req, res).should.be.false;
+      })
+    })
+
+    describe('when none match', function(){
+      it('should be stale', function(){
+        var now = new Date;
+        var req = { 'if-none-match': 'tobi', 'if-modified-since': new Date(now - 4000).toUTCString() };
+        var res = { 'etag': 'luna', 'last-modified': new Date(now - 2000).toUTCString() };
+        fresh(req, res).should.be.false;
+      })
+    })
+  })
 })
