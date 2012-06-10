@@ -63,8 +63,21 @@ describe('fresh(reqHeader, resHeader)', function(){
       })
     })
     
-    xdescribe('with invalid if-modified-since date');
-    xdescribe('with invalid modified-since date');
+    describe('with invalid if-modified-since date', function(){
+      it('should be stale', function(){
+        var req = { 'if-none-match': 'foo' };
+        var res = {};
+        fresh(req, res).should.be.false;
+      })
+    })
+
+    describe('with invalid modified-since date', function(){
+      it('should be stale', function(){
+        var req = { 'if-none-match': new Date().toUTCString() };
+        var res = { 'modified-since': 'foo' };
+        fresh(req, res).should.be.false;
+      })
+    })
   })
 
   describe('when requested with If-Modified-Since and If-None-Match', function(){
