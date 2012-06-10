@@ -1,5 +1,9 @@
 
-# fresh(req, res)
+# node-fresh
+
+  HTTP response freshness testing
+
+## fresh(req, res)
 
  Check freshness of `req` and `res` headers.
 
