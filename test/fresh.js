@@ -27,7 +27,13 @@ describe('fresh(reqHeader, resHeader)', function(){
       })
     })
 
-    xdescribe('when etag is missing');
+    describe('when etag is missing', function(){
+      it('should be stale', function(){
+        var req = { 'if-none-match': 'tobi' };
+        var res = {};
+        fresh(req, res).should.be.false;
+      })
+    })
   })
 
   describe('when requested with If-Modified-Since', function(){
@@ -49,9 +55,16 @@ describe('fresh(reqHeader, resHeader)', function(){
       })
     })
 
+    describe('when last-modified is missing', function(){
+      it('should be stale', function(){
+        var req = { 'if-none-match': new Date().toUTCString() };
+        var res = {};
+        fresh(req, res).should.be.false;
+      })
+    })
+    
     xdescribe('with invalid if-modified-since date');
     xdescribe('with invalid modified-since date');
-    xdescribe('when last-modified is missing');
   })
 
   describe('when requested with If-Modified-Since and If-None-Match', function(){
