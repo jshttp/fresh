@@ -36,7 +36,7 @@ function fresh(req, res) {
   if (noneMatch) noneMatch = noneMatch.split(/ *, */);
 
   // if-none-match
-  if (noneMatch) etagMatches = ~noneMatch.indexOf(etag);
+  if (noneMatch) etagMatches = ~noneMatch.indexOf(etag) || '*' == noneMatch[0];
 
   // if-modified-since
   if (modifiedSince) {
