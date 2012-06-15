@@ -34,6 +34,14 @@ describe('fresh(reqHeader, resHeader)', function(){
         fresh(req, res).should.be.false;
       })
     })
+
+    describe('when * is given', function(){
+      it('should be fresh', function(){
+        var req = { 'if-none-match': '*' };
+        var res = { 'etag': 'hey' };
+        fresh(req, res).should.be.true;
+      })
+    })
   })
 
   describe('when requested with If-Modified-Since', function(){
