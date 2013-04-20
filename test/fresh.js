@@ -121,4 +121,12 @@ describe('fresh(reqHeader, resHeader)', function(){
       })
     })
   })
+
+  describe('when requested with Cache-Control: no-cache', function(){
+    it('should be stale', function(){
+      var req = { 'cache-control' : ' no-cache' };
+      var res = {};
+      fresh(req, res).should.be.false;
+    })
+  })
 })
