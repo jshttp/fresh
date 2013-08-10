@@ -28,13 +28,13 @@ function fresh(req, res) {
   var noneMatch = req['if-none-match'];
   var lastModified = res['last-modified'];
   var etag = res['etag'];
-  var cacheControl = req['cache-control'];
+  var cc = req['cache-control'];
 
   // unconditional request
   if (!modifiedSince && !noneMatch) return false;
 
   // check for no-cache cache request directive
-  if (cacheControl && cacheControl.indexOf('no-cache') !== -1) return false;  
+  if (cc && cc.indexOf('no-cache') !== -1) return false;  
 
   // parse if-none-match
   if (noneMatch) noneMatch = noneMatch.split(/ *, */);
