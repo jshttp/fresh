@@ -33,8 +33,8 @@ function fresh(req, res) {
   // unconditional request
   if (!modifiedSince && !noneMatch) return false;
 
-  // check for no-cache cache request directive
-  if (cc && cc.indexOf('no-cache') !== -1) return false;  
+  // check for no-cache or max-age=0 cache request directive
+  if (cc && (cc.indexOf('no-cache') !== -1 || cc.indexOf('max-age=0') !== -1)) return false;  
 
   // parse if-none-match
   if (noneMatch) noneMatch = noneMatch.split(/ *, */);
