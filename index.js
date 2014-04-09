@@ -36,6 +36,10 @@ function fresh(req, res) {
   // check for no-cache cache request directive
   if (cc && cc.indexOf('no-cache') !== -1) return false;  
 
+  // check for max-age=0 cache request directive, which is sent by some
+  // versions of Safari when a page is reloaded.
+  if (cc && cc.indexOf('max-age=0') !== -1) return false;
+
   // parse if-none-match
   if (noneMatch) noneMatch = noneMatch.split(/ *, */);
 
