@@ -3,18 +3,25 @@
   "author": "TJ Holowaychuk <tj@vision-media.ca> (http://tjholowaychuk.com)",
   "description": "HTTP response freshness testing",
   "version": "0.2.2",
-  "main": "index.js",
-  "repository": { "type": "git", "url": "https://github.com/visionmedia/node-fresh.git"},
-  "dependencies": {},
-  "repository": { "type": "git", "url": "https://github.com/visionmedia/node-fresh.git" },
+  "repository": "jshttp/fresh",
   "devDependencies": {
-    "mocha": "*",
-    "should": "*"
+    "istanbul": "0",
+    "mocha": "1",
+    "should": "3"
   },
-  "licenses": [
-    {
-      "type": "MIT",
-      "url": "https://github.com/visionmedia/node-fresh/blob/master/Readme.md#license"
-    }
+  "license": "MIT",
+  "scripts": {
+    "test": "mocha --reporter spec --require should",
+    "test-cov": "istanbul cover node_modules/mocha/bin/_mocha -- --reporter dot --require should",
+    "test-travis": "istanbul cover node_modules/mocha/bin/_mocha --report lcovonly -- --reporter dot --require should"
+  },
+  "keywords": [
+    "fresh",
+    "http",
+    "conditional",
+    "cache"
+  ],
+  "files": [
+    "index.js"
   ]
 }
