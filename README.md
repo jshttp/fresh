@@ -8,7 +8,19 @@
 
 HTTP response freshness testing
 
-## fresh(req, res)
+## Installation
+
+```
+$ npm install fresh
+```
+
+## API
+
+```js
+var fresh = require('fresh')
+```
+
+### fresh(req, res)
 
  Check freshness of `req` and `res` headers.
 
@@ -16,7 +28,7 @@ HTTP response freshness testing
  otherwise __false__ is returned to indicate that
  the cache is now stale.
 
-## Example:
+## Example
 
 ```js
 var req = { 'if-none-match': 'tobi' };
@@ -30,11 +42,9 @@ fresh(req, res);
 // => true
 ```
 
-## Installation
+## License
 
-```
-$ npm install fresh
-```
+[MIT](LICENSE)
 
 [npm-image]: https://img.shields.io/npm/v/fresh.svg?style=flat
 [npm-url]: https://npmjs.org/package/fresh
