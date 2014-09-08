@@ -10,6 +10,11 @@
     "should": "3"
   },
   "license": "MIT",
+  "files": [
+    "HISTORY.md",
+    "LICENSE",
+    "index.js"
+  ],
   "scripts": {
     "test": "mocha --reporter spec --require should",
     "test-cov": "istanbul cover node_modules/mocha/bin/_mocha -- --reporter dot --require should",
@@ -20,8 +25,5 @@
     "http",
     "conditional",
     "cache"
-  ],
-  "files": [
-    "index.js"
   ]
 }
