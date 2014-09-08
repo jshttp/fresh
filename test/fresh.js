@@ -124,18 +124,8 @@ describe('fresh(reqHeader, resHeader)', function(){
 
   describe('when requested with Cache-Control: no-cache', function(){
     it('should be stale', function(){
-      // use matching etags so it would otherwise be fresh
-      var req = { 'if-none-match': 'tobi', 'cache-control' : 'no-cache' };
-      var res = { 'etag': 'tobi' };
-      fresh(req, res).should.be.false;
-    })
-  })
-
-  describe('when requested with Cache-Control: max-age=0', function(){
-    it('should be stale', function(){
-      // use matching etags so it would otherwise be fresh
-      var req = { 'if-none-match': 'tobi', 'cache-control' : 'max-age=0' };
-      var res = { 'etag': 'tobi' };
+      var req = { 'cache-control' : ' no-cache' };
+      var res = {};
       fresh(req, res).should.be.false;
     })
   })
