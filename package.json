@@ -12,7 +12,7 @@
   ],
   "repository": "jshttp/fresh",
   "devDependencies": {
-    "istanbul": "0",
+    "istanbul": "0.3.9",
     "mocha": "1",
     "should": "3"
   },
