@@ -1,5 +1,5 @@
-unreleased
-==========
+0.3.0 / 2015-05-12
+==================
 
   * Add weak `ETag` matching support
 
