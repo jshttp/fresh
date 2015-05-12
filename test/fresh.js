@@ -36,6 +36,34 @@ describe('fresh(reqHeader, resHeader)', function(){
       })
     })
 
+    describe('when ETag is weak', function () {
+      it('should be fresh on exact match', function () {
+        var req = { 'if-none-match': 'W/"foo"' };
+        var res = { 'etag': 'W/"foo"' };
+        assert.ok(fresh(req, res));
+      })
+
+      it('should be fresh on strong match', function () {
+        var req = { 'if-none-match': 'W/"foo"' };
+        var res = { 'etag': '"foo"' };
+        assert.ok(fresh(req, res));
+      })
+    })
+
+    describe('when ETag is strong', function () {
+      it('should be fresh on exact match', function () {
+        var req = { 'if-none-match': '"foo"' };
+        var res = { 'etag': '"foo"' };
+        assert.ok(fresh(req, res));
+      })
+
+      it('should be stale on weak match', function () {
+        var req = { 'if-none-match': '"foo"' };
+        var res = { 'etag': 'W/"foo"' };
+        assert.ok(!fresh(req, res));
+      })
+    })
+
     describe('when * is given', function(){
       it('should be fresh', function(){
         var req = { 'if-none-match': '*' };
