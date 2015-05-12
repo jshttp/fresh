@@ -13,8 +13,7 @@
   "repository": "jshttp/fresh",
   "devDependencies": {
     "istanbul": "0.3.9",
-    "mocha": "1.21.5",
-    "should": "3"
+    "mocha": "1.21.5"
   },
   "files": [
     "HISTORY.md",
@@ -25,8 +24,8 @@
     "node": ">= 0.6"
   },
   "scripts": {
-    "test": "mocha --reporter spec --require should",
-    "test-cov": "istanbul cover node_modules/mocha/bin/_mocha -- --reporter dot --require should",
-    "test-travis": "istanbul cover node_modules/mocha/bin/_mocha --report lcovonly -- --reporter dot --require should"
+    "test": "mocha --reporter spec --bail --check-leaks test/",
+    "test-cov": "istanbul cover node_modules/mocha/bin/_mocha -- --reporter dot --check-leaks test/",
+    "test-travis": "istanbul cover node_modules/mocha/bin/_mocha --report lcovonly -- --reporter spec --check-leaks test/"
   }
 }

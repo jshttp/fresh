@@ -1,4 +1,5 @@
 
+var assert = require('assert');
 var fresh = require('..');
 
 describe('fresh(reqHeader, resHeader)', function(){
@@ -6,7 +7,7 @@ describe('fresh(reqHeader, resHeader)', function(){
     it('should be stale', function(){
       var req = {};
       var res = {};
-      fresh(req, res).should.be.false;
+      assert.ok(!fresh(req, res));
     })
   })
 
@@ -15,7 +16,7 @@ describe('fresh(reqHeader, resHeader)', function(){
       it('should be fresh', function(){
         var req = { 'if-none-match': 'tobi' };
         var res = { 'etag': 'tobi' };
-        fresh(req, res).should.be.true;
+        assert.ok(fresh(req, res));
       })
     })
 
@@ -23,7 +24,7 @@ describe('fresh(reqHeader, resHeader)', function(){
       it('should be stale', function(){
         var req = { 'if-none-match': 'tobi' };
         var res = { 'etag': 'luna' };
-        fresh(req, res).should.be.false;
+        assert.ok(!fresh(req, res));
       })
     })
 
@@ -31,7 +32,7 @@ describe('fresh(reqHeader, resHeader)', function(){
       it('should be stale', function(){
         var req = { 'if-none-match': 'tobi' };
         var res = {};
-        fresh(req, res).should.be.false;
+        assert.ok(!fresh(req, res));
       })
     })
 
@@ -39,7 +40,7 @@ describe('fresh(reqHeader, resHeader)', function(){
       it('should be fresh', function(){
         var req = { 'if-none-match': '*' };
         var res = { 'etag': 'hey' };
-        fresh(req, res).should.be.true;
+        assert.ok(fresh(req, res));
       })
     })
   })
@@ -50,7 +51,7 @@ describe('fresh(reqHeader, resHeader)', function(){
         var now = new Date;
         var req = { 'if-modified-since': new Date(now - 4000).toUTCString() };
         var res = { 'last-modified': new Date(now - 2000).toUTCString() };
-        fresh(req, res).should.be.false;
+        assert.ok(!fresh(req, res));
       })
     })
 
@@ -59,7 +60,7 @@ describe('fresh(reqHeader, resHeader)', function(){
         var now = new Date;
         var req = { 'if-modified-since': new Date(now - 2000).toUTCString() };
         var res = { 'last-modified': new Date(now - 4000).toUTCString() };
-        fresh(req, res).should.be.true;
+        assert.ok(fresh(req, res));
       })
     })
 
@@ -67,7 +68,7 @@ describe('fresh(reqHeader, resHeader)', function(){
       it('should be stale', function(){
         var req = { 'if-none-match': new Date().toUTCString() };
         var res = {};
-        fresh(req, res).should.be.false;
+        assert.ok(!fresh(req, res));
       })
     })
     
@@ -75,7 +76,7 @@ describe('fresh(reqHeader, resHeader)', function(){
       it('should be stale', function(){
         var req = { 'if-none-match': 'foo' };
         var res = {};
-        fresh(req, res).should.be.false;
+        assert.ok(!fresh(req, res));
       })
     })
 
@@ -83,7 +84,7 @@ describe('fresh(reqHeader, resHeader)', function(){
       it('should be stale', function(){
         var req = { 'if-none-match': new Date().toUTCString() };
         var res = { 'modified-since': 'foo' };
-        fresh(req, res).should.be.false;
+        assert.ok(!fresh(req, res));
       })
     })
   })
@@ -94,7 +95,7 @@ describe('fresh(reqHeader, resHeader)', function(){
         var now = new Date;
         var req = { 'if-none-match': 'tobi', 'if-modified-since': new Date(now - 2000).toUTCString() };
         var res = { 'etag': 'tobi', 'last-modified': new Date(now - 4000).toUTCString() };
-        fresh(req, res).should.be.true;
+        assert.ok(fresh(req, res));
       })
     })
 
@@ -103,12 +104,12 @@ describe('fresh(reqHeader, resHeader)', function(){
         var now = new Date;
         var req = { 'if-none-match': 'tobi', 'if-modified-since': new Date(now - 4000).toUTCString() };
         var res = { 'etag': 'tobi', 'last-modified': new Date(now - 2000).toUTCString() };
-        fresh(req, res).should.be.false;
+        assert.ok(!fresh(req, res));
 
         var now = new Date;
         var req = { 'if-none-match': 'tobi', 'if-modified-since': new Date(now - 2000).toUTCString() };
         var res = { 'etag': 'luna', 'last-modified': new Date(now - 4000).toUTCString() };
-        fresh(req, res).should.be.false;
+        assert.ok(!fresh(req, res));
       })
     })
 
@@ -117,7 +118,7 @@ describe('fresh(reqHeader, resHeader)', function(){
         var now = new Date;
         var req = { 'if-none-match': 'tobi', 'if-modified-since': new Date(now - 4000).toUTCString() };
         var res = { 'etag': 'luna', 'last-modified': new Date(now - 2000).toUTCString() };
-        fresh(req, res).should.be.false;
+        assert.ok(!fresh(req, res));
       })
     })
   })
@@ -126,7 +127,7 @@ describe('fresh(reqHeader, resHeader)', function(){
     it('should be stale', function(){
       var req = { 'cache-control' : ' no-cache' };
       var res = {};
-      fresh(req, res).should.be.false;
+      assert.ok(!fresh(req, res));
     })
   })
 })
