@@ -1,6 +1,12 @@
+/*!
+ * fresh
+ * Copyright(c) 2012 TJ Holowaychuk
+ * MIT Licensed
+ */
 
 /**
- * Expose `fresh()`.
+ * Module exports.
+ * @public
  */
 
 module.exports = fresh;
@@ -15,7 +21,7 @@ module.exports = fresh;
  * @param {Object} req
  * @param {Object} res
  * @return {Boolean}
- * @api public
+ * @public
  */
 
 function fresh(req, res) {
