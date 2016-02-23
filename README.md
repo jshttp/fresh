@@ -49,7 +49,7 @@ fresh(req, res);
 [npm-image]: https://img.shields.io/npm/v/fresh.svg
 [npm-url]: https://npmjs.org/package/fresh
 [node-version-image]: https://img.shields.io/node/v/fresh.svg
-[node-version-url]: http://nodejs.org/download/
+[node-version-url]: https://nodejs.org/en/
 [travis-image]: https://img.shields.io/travis/jshttp/fresh/master.svg
 [travis-url]: https://travis-ci.org/jshttp/fresh
 [coveralls-image]: https://img.shields.io/coveralls/jshttp/fresh/master.svg
