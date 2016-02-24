@@ -28,6 +28,21 @@ var fresh = require('fresh')
  otherwise __false__ is returned to indicate that
  the cache is now stale.
 
+## Known Issues
+
+This module is designed to only following the HTTP specifications,
+not to work-around all kinda of client bugs (especially since this
+module typically does not recieve enough information to understand
+what the client actually is).
+
+There is a known issue that in certain versions of Safari, Safari
+will incorrectly make a request that allows this module to validate
+freshness of the resource even when Safari does not have a
+representation of the resource in the cache. The module
+[jumanji](https://www.npmjs.com/package/jumanji) can be used in
+an Express application to work-around this issue and also provides
+links to further reading on this Safari bug.
+
 ## Example
 
 ```js
