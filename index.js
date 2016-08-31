@@ -6,6 +6,8 @@
 
 'use strict';
 
+var http = require('http');
+
 /**
  * Module exports.
  * @public
@@ -27,6 +29,13 @@ module.exports = fresh;
  */
 
 function fresh(req, res) {
+  if (req instanceof http.IncomingMessage) {
+    req = req.headers;
+  }
+  if (res instanceof http.OutgoingMessage) {
+    res = res._headers || {};
+  }
+
   // defaults
   var etagMatches = true;
   var notModified = true;
@@ -42,7 +51,7 @@ function fresh(req, res) {
   if (!modifiedSince && !noneMatch) return false;
 
   // check for no-cache cache request directive
-  if (cc && cc.indexOf('no-cache') !== -1) return false;  
+  if (cc && cc.indexOf('no-cache') !== -1) return false;
 
   // parse if-none-match
   if (noneMatch) noneMatch = noneMatch.split(/ *, */);
