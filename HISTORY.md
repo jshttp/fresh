@@ -3,6 +3,7 @@ unreleased
 
   * perf: enable strict mode
   * perf: hoist regular expressions
+  * perf: remove duplicate conditional
 
 0.3.0 / 2015-05-12
 ==================

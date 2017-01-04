@@ -47,13 +47,9 @@ function fresh (reqHeaders, resHeaders) {
   // check for no-cache cache request directive
   if (cc && cc.indexOf('no-cache') !== -1) return false;  
 
-  // parse if-none-match
-  if (noneMatch) {
-    noneMatch = noneMatch.split(TOKEN_LIST_REGEXP)
-  }
-
   // if-none-match
   if (noneMatch) {
+    noneMatch = noneMatch.split(TOKEN_LIST_REGEXP)
     etagMatches = noneMatch.some(function (match) {
       return match === '*' || match === etag || match === 'W/' + etag;
     });
