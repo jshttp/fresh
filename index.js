@@ -38,6 +38,12 @@ function fresh(req, res) {
   var etag = res['etag'];
   var cc = req['cache-control'];
 
+  // support changes in response headers storage
+  if (lastModified && typeof lastModified !== 'string')
+    lastModified = lastModified[1];
+  if (etag && typeof etag !== 'string')
+    etag = etag[1];
+
   // unconditional request
   if (!modifiedSince && !noneMatch) return false;
 
