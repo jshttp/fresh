@@ -127,13 +127,17 @@ describe('fresh(reqHeader, resHeader)', function(){
       })
     })
 
-    describe('when only one matches', function(){
+    describe('when only ETag matches', function () {
       it('should be stale', function(){
         var now = new Date;
         var req = { 'if-none-match': 'tobi', 'if-modified-since': new Date(now - 4000).toUTCString() };
         var res = { 'etag': 'tobi', 'last-modified': new Date(now - 2000).toUTCString() };
         assert.ok(!fresh(req, res));
+      })
+    })
 
+    describe('when only Last-Modified matches', function () {
+      it('should be stale', function () {
         var now = new Date;
         var req = { 'if-none-match': 'tobi', 'if-modified-since': new Date(now - 2000).toUTCString() };
         var res = { 'etag': 'luna', 'last-modified': new Date(now - 4000).toUTCString() };
