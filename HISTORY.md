@@ -2,6 +2,7 @@ unreleased
 ==========
 
   * perf: enable strict mode
+  * perf: hoist regular expressions
 
 0.3.0 / 2015-05-12
 ==================

@@ -7,6 +7,13 @@
 'use strict';
 
 /**
+ * Simple expression to split token list.
+ * @private
+ */
+
+var TOKEN_LIST_REGEXP = / *, */
+
+/**
  * Module exports.
  * @public
  */
@@ -45,7 +52,9 @@ function fresh(req, res) {
   if (cc && cc.indexOf('no-cache') !== -1) return false;  
 
   // parse if-none-match
-  if (noneMatch) noneMatch = noneMatch.split(/ *, */);
+  if (noneMatch) {
+    noneMatch = noneMatch.split(TOKEN_LIST_REGEXP)
+  }
 
   // if-none-match
   if (noneMatch) {
