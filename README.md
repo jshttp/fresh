@@ -34,10 +34,10 @@ var fresh = require('fresh')
 
 ## Known Issues
 
-This module is designed to only following the HTTP specifications,
-not to work-around all kinda of client bugs (especially since this
-module typically does not recieve enough information to understand
-what the client actually is).
+This module is designed to only follow the HTTP specifications, not
+to work-around all kinda of client bugs (especially since this module
+typically does not recieve enough information to understand what the
+client actually is).
 
 There is a known issue that in certain versions of Safari, Safari
 will incorrectly make a request that allows this module to validate
