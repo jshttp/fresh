@@ -24,13 +24,13 @@ $ npm install fresh
 var fresh = require('fresh')
 ```
 
-### fresh(req, res)
+### fresh(reqHeaders, resHeaders)
 
- Check freshness of `req` and `res` headers.
+Check freshness of the response using request and response headers.
 
- When the cache is "fresh" __true__ is returned,
- otherwise __false__ is returned to indicate that
- the cache is now stale.
+When the response is still "fresh" in the client's cache `true` is
+returned, otherwise `false` is returned to indicate that the client
+cache is now stale and the full response should be sent.
 
 ## Known Issues
 
@@ -50,14 +50,14 @@ links to further reading on this Safari bug.
 ## Example
 
 ```js
-var req = { 'if-none-match': 'tobi' };
-var res = { 'etag': 'luna' };
-fresh(req, res);
+var reqHeaders = { 'if-none-match': 'tobi' }
+var resHeaders = { 'etag': 'luna' }
+fresh(reqHeaders, resHeaders)
 // => false
 
-var req = { 'if-none-match': 'tobi' };
-var res = { 'etag': 'tobi' };
-fresh(req, res);
+var reqHeaders = { 'if-none-match': 'tobi' }
+var resHeaders = { 'etag': 'tobi' }
+fresh(reqHeaders, resHeaders)
 // => true
 ```
 

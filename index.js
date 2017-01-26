@@ -21,29 +21,25 @@ var TOKEN_LIST_REGEXP = / *, */
 module.exports = fresh;
 
 /**
- * Check freshness of `req` and `res` headers.
+ * Check freshness of the response using request and response headers.
  *
- * When the cache is "fresh" __true__ is returned,
- * otherwise __false__ is returned to indicate that
- * the cache is now stale.
- *
- * @param {Object} req
- * @param {Object} res
+ * @param {Object} reqHeaders
+ * @param {Object} resHeaders
  * @return {Boolean}
  * @public
  */
 
-function fresh(req, res) {
+function fresh (reqHeaders, resHeaders) {
   // defaults
   var etagMatches = true;
   var notModified = true;
 
   // fields
-  var modifiedSince = req['if-modified-since'];
-  var noneMatch = req['if-none-match'];
-  var lastModified = res['last-modified'];
-  var etag = res['etag'];
-  var cc = req['cache-control'];
+  var modifiedSince = reqHeaders['if-modified-since']
+  var noneMatch = reqHeaders['if-none-match']
+  var lastModified = resHeaders['last-modified']
+  var etag = resHeaders['etag']
+  var cc = reqHeaders['cache-control']
 
   // unconditional request
   if (!modifiedSince && !noneMatch) return false;
