@@ -50,13 +50,13 @@ links to further reading on this Safari bug.
 ## Example
 
 ```js
-var reqHeaders = { 'if-none-match': 'tobi' }
-var resHeaders = { 'etag': 'luna' }
+var reqHeaders = { 'if-none-match': '"foo"' }
+var resHeaders = { 'etag': '"bar"' }
 fresh(reqHeaders, resHeaders)
 // => false
 
-var reqHeaders = { 'if-none-match': 'tobi' }
-var resHeaders = { 'etag': 'tobi' }
+var reqHeaders = { 'if-none-match': '"foo"' }
+var resHeaders = { 'etag': '"foo"' }
 fresh(reqHeaders, resHeaders)
 // => true
 ```
