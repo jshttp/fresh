@@ -92,25 +92,25 @@ describe('fresh(reqHeaders, resHeaders)', function () {
       })
     })
 
-    describe('when last-modified is missing', function(){
+    describe('when Last-Modified is missing', function () {
       it('should be stale', function(){
-        var reqHeaders = { 'if-none-match': new Date().toUTCString() }
+        var reqHeaders = { 'if-modified-since': new Date().toUTCString() }
         var resHeaders = {}
         assert.ok(!fresh(reqHeaders, resHeaders))
       })
     })
     
-    describe('with invalid if-modified-since date', function(){
+    describe('with invalid If-Modified-Since date', function () {
       it('should be stale', function(){
-        var reqHeaders = { 'if-none-match': 'foo' }
+        var reqHeaders = { 'if-modified-since': 'foo' }
         var resHeaders = {}
         assert.ok(!fresh(reqHeaders, resHeaders))
       })
     })
 
-    describe('with invalid modified-since date', function(){
+    describe('with invalid Modified-Since date', function () {
       it('should be stale', function(){
-        var reqHeaders = { 'if-none-match': new Date().toUTCString() }
+        var reqHeaders = { 'if-modified-since': new Date().toUTCString() }
         var resHeaders = { 'modified-since': 'foo' }
         assert.ok(!fresh(reqHeaders, resHeaders))
       })
