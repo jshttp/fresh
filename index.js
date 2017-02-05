@@ -73,5 +73,5 @@ function fresh (reqHeaders, resHeaders) {
     notModified = lastModified <= modifiedSince;
   }
 
-  return !! (etagMatches && notModified);
+  return etagMatches && notModified
 }
