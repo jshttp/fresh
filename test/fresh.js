@@ -155,5 +155,21 @@ describe('fresh(reqHeaders, resHeaders)', function () {
       var resHeaders = {}
       assert.ok(!fresh(reqHeaders, resHeaders))
     })
+
+    describe('when ETags match', function () {
+      it('should be stale', function () {
+        var reqHeaders = { 'cache-control': ' no-cache', 'if-none-match': '"foo"' }
+        var resHeaders = { 'etag': '"foo"' }
+        assert.ok(!fresh(reqHeaders, resHeaders))
+      })
+    })
+
+    describe('when unmodified since the date', function () {
+      it('should be stale', function () {
+        var reqHeaders = { 'cache-control': ' no-cache', 'if-modified-since': 'Sat, 01 Jan 2000 01:00:00 GMT' }
+        var resHeaders = { 'last-modified': 'Sat, 01 Jan 2000 00:00:00 GMT' }
+        assert.ok(!fresh(reqHeaders, resHeaders))
+      })
+    })
   })
 })
