@@ -1,6 +1,7 @@
 unreleased
 ==========
 
+  * Fix false detection of `no-cache` request directive
   * perf: enable strict mode
   * perf: hoist regular expressions
   * perf: remove duplicate conditional

@@ -7,6 +7,13 @@
 'use strict';
 
 /**
+ * RegExp to check for no-cache token in Cache-Control.
+ * @private
+ */
+
+var CACHE_CONTROL_NO_CACHE_REGEXP = /(?:^|,)\s*?no-cache\s*?(?:,|$)/
+
+/**
  * Simple expression to split token list.
  * @private
  */
@@ -35,17 +42,19 @@ function fresh (reqHeaders, resHeaders) {
   var notModified = true;
 
   // fields
+  var cacheControl = reqHeaders['cache-control']
   var modifiedSince = reqHeaders['if-modified-since']
   var noneMatch = reqHeaders['if-none-match']
   var lastModified = resHeaders['last-modified']
   var etag = resHeaders['etag']
-  var cc = reqHeaders['cache-control']
 
   // unconditional request
   if (!modifiedSince && !noneMatch) return false;
 
   // check for no-cache cache request directive
-  if (cc && cc.indexOf('no-cache') !== -1) return false;  
+  if (cacheControl && CACHE_CONTROL_NO_CACHE_REGEXP.test(cacheControl)) {
+    return false
+  }
 
   // if-none-match
   if (noneMatch) {
