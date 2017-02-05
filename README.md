@@ -32,6 +32,10 @@ When the response is still "fresh" in the client's cache `true` is
 returned, otherwise `false` is returned to indicate that the client
 cache is now stale and the full response should be sent.
 
+When a client sends the `Cache-Control: no-cache` request header to
+indicate an end-to-end reoad request, this module will return `false`
+to make handling these requests transparent.
+
 ## Known Issues
 
 This module is designed to only follow the HTTP specifications, not

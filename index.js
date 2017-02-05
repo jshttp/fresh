@@ -51,7 +51,9 @@ function fresh (reqHeaders, resHeaders) {
   // unconditional request
   if (!modifiedSince && !noneMatch) return false;
 
-  // check for no-cache cache request directive
+  // Always return stale when Cache-Control: no-cache
+  // to support end-to-end reload requests
+  // https://tools.ietf.org/html/rfc2616#section-14.9.4
   if (cacheControl && CACHE_CONTROL_NO_CACHE_REGEXP.test(cacheControl)) {
     return false
   }
