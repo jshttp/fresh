@@ -1,5 +1,5 @@
-unreleased
-==========
+0.4.0 / 2017-02-05
+==================
 
   * Fix false detection of `no-cache` request directive
   * perf: enable strict mode
