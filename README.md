@@ -33,7 +33,7 @@ returned, otherwise `false` is returned to indicate that the client
 cache is now stale and the full response should be sent.
 
 When a client sends the `Cache-Control: no-cache` request header to
-indicate an end-to-end reoad request, this module will return `false`
+indicate an end-to-end reload request, this module will return `false`
 to make handling these requests transparent.
 
 ## Known Issues
