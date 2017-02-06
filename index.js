@@ -5,7 +5,7 @@
  * MIT Licensed
  */
 
-'use strict';
+'use strict'
 
 /**
  * RegExp to check for no-cache token in Cache-Control.
@@ -26,7 +26,7 @@ var TOKEN_LIST_REGEXP = / *, */
  * @public
  */
 
-module.exports = fresh;
+module.exports = fresh
 
 /**
  * Check freshness of the response using request and response headers.
@@ -39,8 +39,8 @@ module.exports = fresh;
 
 function fresh (reqHeaders, resHeaders) {
   // defaults
-  var etagMatches = true;
-  var notModified = true;
+  var etagMatches = true
+  var notModified = true
 
   // fields
   var cacheControl = reqHeaders['cache-control']
@@ -50,7 +50,9 @@ function fresh (reqHeaders, resHeaders) {
   var etag = resHeaders['etag']
 
   // unconditional request
-  if (!modifiedSince && !noneMatch) return false;
+  if (!modifiedSince && !noneMatch) {
+    return false
+  }
 
   // Always return stale when Cache-Control: no-cache
   // to support end-to-end reload requests
@@ -63,15 +65,15 @@ function fresh (reqHeaders, resHeaders) {
   if (noneMatch) {
     noneMatch = noneMatch.split(TOKEN_LIST_REGEXP)
     etagMatches = noneMatch.some(function (match) {
-      return match === '*' || match === etag || match === 'W/' + etag;
-    });
+      return match === '*' || match === etag || match === 'W/' + etag
+    })
   }
 
   // if-modified-since
   if (modifiedSince) {
-    modifiedSince = new Date(modifiedSince);
-    lastModified = new Date(lastModified);
-    notModified = lastModified <= modifiedSince;
+    modifiedSince = new Date(modifiedSince)
+    lastModified = new Date(lastModified)
+    notModified = lastModified <= modifiedSince
   }
 
   return etagMatches && notModified
