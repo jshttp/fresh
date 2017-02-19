@@ -3,6 +3,7 @@ unreleased
 
   * Fix incorrect result when `If-None-Match` has both `*` and ETags
   * Fix weak `ETag` matching to match spec
+  * perf: delay reading header values until needed
   * perf: skip parsing `If-None-Match` when no `ETag` header
 
 0.4.0 / 2017-02-05

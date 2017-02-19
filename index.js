@@ -43,11 +43,8 @@ function fresh (reqHeaders, resHeaders) {
   var notModified = true
 
   // fields
-  var cacheControl = reqHeaders['cache-control']
   var modifiedSince = reqHeaders['if-modified-since']
   var noneMatch = reqHeaders['if-none-match']
-  var lastModified = resHeaders['last-modified']
-  var etag = resHeaders['etag']
 
   // unconditional request
   if (!modifiedSince && !noneMatch) {
@@ -57,12 +54,14 @@ function fresh (reqHeaders, resHeaders) {
   // Always return stale when Cache-Control: no-cache
   // to support end-to-end reload requests
   // https://tools.ietf.org/html/rfc2616#section-14.9.4
+  var cacheControl = reqHeaders['cache-control']
   if (cacheControl && CACHE_CONTROL_NO_CACHE_REGEXP.test(cacheControl)) {
     return false
   }
 
   // if-none-match
   if (noneMatch && noneMatch !== '*') {
+    var etag = resHeaders['etag']
     etagMatches = Boolean(etag) && noneMatch.split(TOKEN_LIST_REGEXP).some(function (match) {
       return match === etag || match === 'W/' + etag || 'W/' + match === etag
     })
@@ -70,9 +69,8 @@ function fresh (reqHeaders, resHeaders) {
 
   // if-modified-since
   if (modifiedSince) {
-    modifiedSince = new Date(modifiedSince)
-    lastModified = new Date(lastModified)
-    notModified = lastModified <= modifiedSince
+    var lastModified = resHeaders['last-modified']
+    notModified = new Date(lastModified) <= new Date(modifiedSince)
   }
 
   return etagMatches && notModified
