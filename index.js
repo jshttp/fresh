@@ -38,10 +38,6 @@ module.exports = fresh
  */
 
 function fresh (reqHeaders, resHeaders) {
-  // defaults
-  var etagMatches = true
-  var notModified = true
-
   // fields
   var modifiedSince = reqHeaders['if-modified-since']
   var noneMatch = reqHeaders['if-none-match']
@@ -62,16 +58,24 @@ function fresh (reqHeaders, resHeaders) {
   // if-none-match
   if (noneMatch && noneMatch !== '*') {
     var etag = resHeaders['etag']
-    etagMatches = Boolean(etag) && noneMatch.split(TOKEN_LIST_REGEXP).some(function (match) {
-      return match === etag || match === 'W/' + etag || 'W/' + match === etag
+    var etagStale = !etag || noneMatch.split(TOKEN_LIST_REGEXP).every(function (match) {
+      return match !== etag && match !== 'W/' + etag && 'W/' + match !== etag
     })
+
+    if (etagStale) {
+      return false
+    }
   }
 
   // if-modified-since
   if (modifiedSince) {
     var lastModified = resHeaders['last-modified']
-    notModified = new Date(lastModified) <= new Date(modifiedSince)
+    var modifiedStale = !lastModified || new Date(lastModified) > new Date(modifiedSince)
+
+    if (modifiedStale) {
+      return false
+    }
   }
 
-  return etagMatches && notModified
+  return true
 }
