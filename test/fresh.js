@@ -57,10 +57,10 @@ describe('fresh(reqHeaders, resHeaders)', function () {
         assert.ok(fresh(reqHeaders, resHeaders))
       })
 
-      it('should be stale on weak match', function () {
+      it('should be fresh on weak match', function () {
         var reqHeaders = { 'if-none-match': '"foo"' }
         var resHeaders = { 'etag': 'W/"foo"' }
-        assert.ok(!fresh(reqHeaders, resHeaders))
+        assert.ok(fresh(reqHeaders, resHeaders))
       })
     })
 

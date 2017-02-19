@@ -1,3 +1,8 @@
+unreleased
+==========
+
+  * Fix weak `ETag` matching to match spec
+
 0.4.0 / 2017-02-05
 ==================
 
