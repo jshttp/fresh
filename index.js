@@ -63,8 +63,7 @@ function fresh (reqHeaders, resHeaders) {
 
   // if-none-match
   if (noneMatch && noneMatch !== '*') {
-    noneMatch = noneMatch.split(TOKEN_LIST_REGEXP)
-    etagMatches = noneMatch.some(function (match) {
+    etagMatches = Boolean(etag) && noneMatch.split(TOKEN_LIST_REGEXP).some(function (match) {
       return match === etag || match === 'W/' + etag || 'W/' + match === etag
     })
   }
