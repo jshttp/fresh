@@ -6,6 +6,7 @@ unreleased
   * perf: delay reading header values until needed
   * perf: skip checking modified time if ETag check failed
   * perf: skip parsing `If-None-Match` when no `ETag` header
+  * perf: use `Date.parse` instead of `new Date`
 
 0.4.0 / 2017-02-05
 ==================

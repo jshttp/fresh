@@ -70,7 +70,7 @@ function fresh (reqHeaders, resHeaders) {
   // if-modified-since
   if (modifiedSince) {
     var lastModified = resHeaders['last-modified']
-    var modifiedStale = !lastModified || new Date(lastModified) > new Date(modifiedSince)
+    var modifiedStale = !lastModified || Date.parse(lastModified) > Date.parse(modifiedSince)
 
     if (modifiedStale) {
       return false
