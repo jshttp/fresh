@@ -70,6 +70,12 @@ describe('fresh(reqHeaders, resHeaders)', function () {
         var resHeaders = { 'etag': '"foo"' }
         assert.ok(fresh(reqHeaders, resHeaders))
       })
+
+      it('should get ignored if not only value', function () {
+        var reqHeaders = { 'if-none-match': '*, "bar"' }
+        var resHeaders = { 'etag': '"foo"' }
+        assert.ok(!fresh(reqHeaders, resHeaders))
+      })
     })
   })
 
