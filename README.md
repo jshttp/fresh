@@ -53,6 +53,8 @@ links to further reading on this Safari bug.
 
 ## Example
 
+### API usage
+
 ```js
 var reqHeaders = { 'if-none-match': '"foo"' }
 var resHeaders = { 'etag': '"bar"' }
@@ -63,6 +65,36 @@ var reqHeaders = { 'if-none-match': '"foo"' }
 var resHeaders = { 'etag': '"foo"' }
 fresh(reqHeaders, resHeaders)
 // => true
+```
+
+### Using with Node.js http server
+
+```js
+var fresh = require('fresh')
+var http = require('http')
+
+var server = http.createServer(function (req, res) {
+  // perform server logic
+  // ... including adding ETag / Last-Modified response headers
+
+  if (isFresh(req, res)) {
+    // client has a fresh copy of resource
+    res.statusCode = 304
+    res.end()
+    return
+  }
+
+  // send the resource
+})
+
+function isFresh (req, res) {
+  return fresh(req.headers, {
+    'etag': res.getHeader('ETag'),
+    'last-modified': res.getHeader('Last-Modified')
+  })
+}
+
+server.listen(3000)
 ```
 
 ## License
