@@ -1,5 +1,5 @@
-unreleased
-==========
+0.5.0 / 2017-02-21
+==================
 
   * Fix incorrect result when `If-None-Match` has both `*` and ETags
   * Fix weak `ETag` matching to match spec
