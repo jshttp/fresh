@@ -51,7 +51,7 @@ function fresh (reqHeaders, resHeaders) {
   // to support end-to-end reload requests
   // https://tools.ietf.org/html/rfc2616#section-14.9.4
   var cacheControl = reqHeaders['cache-control']
-  if (cacheControl && CACHE_CONTROL_NO_CACHE_REGEXP.test(cacheControl)) {
+  if (cacheControl && CACHE_CONTROL_NO_CACHE_REGEXP.exec(cacheControl) !== null) {
     return false
   }
 
