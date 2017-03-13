@@ -58,12 +58,17 @@ function fresh (reqHeaders, resHeaders) {
   // if-none-match
   if (noneMatch && noneMatch !== '*') {
     var etag = resHeaders['etag']
-    var etagStale = !etag || noneMatch.split(TOKEN_LIST_REGEXP).every(function (match) {
-      return match !== etag && match !== 'W/' + etag && 'W/' + match !== etag
-    })
 
-    if (etagStale) {
+    if (!etag) {
       return false
+    }
+
+    var tokenList = noneMatch.split(TOKEN_LIST_REGEXP)
+    for (var i = 0; i < tokenList.length; i++) {
+      var match = tokenList[i]
+      if (match !== etag && match !== 'W/' + etag && 'W/' + match !== etag) {
+        return false
+      }
     }
   }
 
