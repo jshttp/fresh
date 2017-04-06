@@ -42,6 +42,12 @@ function fresh (reqHeaders, resHeaders) {
   var modifiedSince = reqHeaders['if-modified-since']
   var noneMatch = reqHeaders['if-none-match']
 
+  // support changes in response headers storage
+  if (lastModified && typeof lastModified !== 'string')
+    lastModified = lastModified[1];
+  if (etag && typeof etag !== 'string')
+    etag = etag[1];
+
   // unconditional request
   if (!modifiedSince && !noneMatch) {
     return false

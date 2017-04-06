@@ -178,4 +178,17 @@ describe('fresh(reqHeaders, resHeaders)', function () {
       })
     })
   })
+
+  describe('when response headers are stored as an array', function(){
+    it('should find the correct values', function(){
+      var req = { 'if-none-match': '12345' };
+      var res = { 'etag': ['ETag', '12345'] };
+      assert.ok(fresh(req, res));
+
+      var now = new Date;
+      var req = { 'if-modified-since': new Date(now - 2000).toUTCString() };
+      var res = { 'last-modified': ['Last-Modified', new Date(now - 4000).toUTCString() ] };
+      assert.ok(fresh(req, res));
+    })
+  })
 })
