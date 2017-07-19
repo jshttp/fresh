@@ -69,8 +69,10 @@ function fresh (reqHeaders, resHeaders) {
 
   // if-modified-since
   if (modifiedSince) {
-    var lastModified = resHeaders['last-modified']
-    var modifiedStale = !lastModified || Date.parse(lastModified) > Date.parse(modifiedSince)
+    var lastModifiedTimestamp = Date.parse(resHeaders['last-modified'])
+    var modifiedSinceTimestamp = Date.parse(modifiedSince)
+    var modifiedStale = isNaN(lastModifiedTimestamp) || isNaN(modifiedSinceTimestamp) ||
+      lastModifiedTimestamp > modifiedSinceTimestamp
 
     if (modifiedStale) {
       return false
