@@ -70,7 +70,7 @@ function fresh (reqHeaders, resHeaders) {
   // if-modified-since
   if (modifiedSince) {
     var lastModified = resHeaders['last-modified']
-    var modifiedStale = !lastModified || Date.parse(lastModified) > Date.parse(modifiedSince)
+    var modifiedStale = !lastModified || !(parseHttpDate(lastModified) <= parseHttpDate(modifiedSince))
 
     if (modifiedStale) {
       return false
@@ -78,4 +78,20 @@ function fresh (reqHeaders, resHeaders) {
   }
 
   return true
+}
+
+/**
+ * Parse an HTTP Date into a number.
+ *
+ * @param {string} date
+ * @private
+ */
+
+function parseHttpDate (date) {
+  var timestamp = date && Date.parse(date)
+
+  // istanbul ignore next: guard against date.js Date.parse patching
+  return typeof timestamp === 'number'
+    ? timestamp
+    : NaN
 }

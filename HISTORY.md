@@ -1,3 +1,8 @@
+unreleased
+==========
+
+  * Fix handling of modified headers with invalid dates
+
 0.5.0 / 2017-02-21
 ==================
 
