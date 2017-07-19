@@ -107,15 +107,15 @@ describe('fresh(reqHeaders, resHeaders)', function () {
     describe('with invalid If-Modified-Since date', function () {
       it('should be stale', function () {
         var reqHeaders = { 'if-modified-since': 'foo' }
-        var resHeaders = { 'modified-since': 'Sat, 01 Jan 2000 00:00:00 GMT' }
+        var resHeaders = { 'last-modified': 'Sat, 01 Jan 2000 00:00:00 GMT' }
         assert.ok(!fresh(reqHeaders, resHeaders))
       })
     })
 
-    describe('with invalid Modified-Since date', function () {
+    describe('with invalid Last-Modified date', function () {
       it('should be stale', function () {
         var reqHeaders = { 'if-modified-since': 'Sat, 01 Jan 2000 00:00:00 GMT' }
-        var resHeaders = { 'modified-since': 'foo' }
+        var resHeaders = { 'last-modified': 'foo' }
         assert.ok(!fresh(reqHeaders, resHeaders))
       })
     })
