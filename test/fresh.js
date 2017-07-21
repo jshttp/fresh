@@ -119,6 +119,61 @@ describe('fresh(reqHeaders, resHeaders)', function () {
         assert.ok(!fresh(reqHeaders, resHeaders))
       })
     })
+
+    describe('with earliest possible If-Modified-Since date', function () {
+      it('should be stale', function () {
+        var reqHeaders = { 'if-modified-since': 'Thu, 01 Jan 1970 00:00:00 GMT' }
+        var resHeaders = { 'last-modified': 'Sat, 01 Jan 2000 00:00:00 GMT' }
+        assert.ok(!fresh(reqHeaders, resHeaders))
+      })
+    })
+
+    describe('with earliest possible Last-Modified date', function () {
+      it('should be fresh', function () {
+        var reqHeaders = { 'if-modified-since': 'Sat, 01 Jan 2000 00:00:00 GMT' }
+        var resHeaders = { 'last-modified': 'Thu, 01 Jan 1970 00:00:00 GMT' }
+        assert.ok(fresh(reqHeaders, resHeaders))
+      })
+    })
+
+    describe('with earliest possible Last-Modified and If-Modified-Since date', function () {
+      it('should be fresh', function () {
+        var reqHeaders = { 'if-modified-since': 'Thu, 01 Jan 1970 00:00:00 GMT' }
+        var resHeaders = { 'last-modified': 'Thu, 01 Jan 1970 00:00:00 GMT' }
+        assert.ok(fresh(reqHeaders, resHeaders))
+      })
+    })
+
+    describe('when Date.parse was monkey patched', function () {
+      var dateParse = Date.parse
+
+      before(function () {
+        Date.parse = function (str) {
+          var date = dateParse(str)
+          return isNaN(date) ? false : date
+        }
+      })
+
+      after(function () {
+        Date.parse = dateParse
+      })
+
+      describe('with invalid If-Modified-Since date', function () {
+        it('should be stale', function () {
+          var reqHeaders = { 'if-modified-since': 'foo' }
+          var resHeaders = { 'last-modified': 'Sat, 01 Jan 2000 00:00:00 GMT' }
+          assert.ok(!fresh(reqHeaders, resHeaders))
+        })
+      })
+
+      describe('with invalid Last-Modified date', function () {
+        it('should be stale', function () {
+          var reqHeaders = { 'if-modified-since': 'Sat, 01 Jan 2000 00:00:00 GMT' }
+          var resHeaders = { 'last-modified': 'foo' }
+          assert.ok(!fresh(reqHeaders, resHeaders))
+        })
+      })
+    })
   })
 
   describe('when requested with If-Modified-Since and If-None-Match', function () {
