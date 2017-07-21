@@ -71,8 +71,19 @@ function fresh (reqHeaders, resHeaders) {
   if (modifiedSince) {
     var lastModifiedTimestamp = Date.parse(resHeaders['last-modified'])
     var modifiedSinceTimestamp = Date.parse(modifiedSince)
-    var modifiedStale = isNaN(lastModifiedTimestamp) || isNaN(modifiedSinceTimestamp) ||
-      lastModifiedTimestamp > modifiedSinceTimestamp
+
+    // If-Modified-Since request header has an invalid date value. Every falsy value except 0 is treated as invalid,
+    // because the default behavior of Date.parse to return NaN on invalid dates might have been monkey patched
+    if ((!modifiedSinceTimestamp && modifiedSinceTimestamp !== 0) || !isFinite(modifiedSinceTimestamp)) {
+      return false
+    }
+
+    // Last-Modified response header has an invalid date value
+    if ((!lastModifiedTimestamp && lastModifiedTimestamp !== 0) || !isFinite(lastModifiedTimestamp)) {
+      return false
+    }
+
+    var modifiedStale = lastModifiedTimestamp > modifiedSinceTimestamp
 
     if (modifiedStale) {
       return false
