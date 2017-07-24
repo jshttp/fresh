@@ -150,7 +150,9 @@ describe('fresh(reqHeaders, resHeaders)', function () {
       before(function () {
         Date.parse = function (str) {
           var date = dateParse(str)
-          return isNaN(date) ? false : date
+          // https://www.npmjs.com/package/datejs unconditionally patches Date.parse and returns null instead of NaN
+          // for invalid dates
+          return isNaN(date) ? null : date
         }
       })
 
