@@ -120,7 +120,7 @@ describe('fresh(reqHeaders, resHeaders)', function () {
       })
     })
 
-    describe('with earliest possible If-Modified-Since date', function () {
+    describe('with unix epoch (timestamp 0) in If-Modified-Since header', function () {
       it('should be stale', function () {
         var reqHeaders = { 'if-modified-since': 'Thu, 01 Jan 1970 00:00:00 GMT' }
         var resHeaders = { 'last-modified': 'Sat, 01 Jan 2000 00:00:00 GMT' }
@@ -128,7 +128,7 @@ describe('fresh(reqHeaders, resHeaders)', function () {
       })
     })
 
-    describe('with earliest possible Last-Modified date', function () {
+    describe('with unix epoch (timestamp 0) in Last-Modified header', function () {
       it('should be fresh', function () {
         var reqHeaders = { 'if-modified-since': 'Sat, 01 Jan 2000 00:00:00 GMT' }
         var resHeaders = { 'last-modified': 'Thu, 01 Jan 1970 00:00:00 GMT' }
@@ -136,7 +136,7 @@ describe('fresh(reqHeaders, resHeaders)', function () {
       })
     })
 
-    describe('with earliest possible Last-Modified and If-Modified-Since date', function () {
+    describe('with unix epoch (timestamp 0) in Last-Modified and If-Modified-Since header', function () {
       it('should be fresh', function () {
         var reqHeaders = { 'if-modified-since': 'Thu, 01 Jan 1970 00:00:00 GMT' }
         var resHeaders = { 'last-modified': 'Thu, 01 Jan 1970 00:00:00 GMT' }
