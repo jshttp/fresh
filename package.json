@@ -16,6 +16,8 @@
   ],
   "repository": "jshttp/fresh",
   "devDependencies": {
+    "beautify-benchmark": "0.2.4",
+    "benchmark": "2.1.4",
     "eslint": "3.19.0",
     "eslint-config-standard": "10.2.1",
     "eslint-plugin-import": "2.7.0",
@@ -35,6 +37,7 @@
     "node": ">= 0.6"
   },
   "scripts": {
+    "bench": "node benchmark/index.js",
     "lint": "eslint --plugin markdown --ext js,md .",
     "test": "mocha --reporter spec --bail --check-leaks test/",
     "test-cov": "istanbul cover node_modules/mocha/bin/_mocha -- --reporter dot --check-leaks test/",
