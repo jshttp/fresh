@@ -1,5 +1,5 @@
-unreleased
-==========
+0.5.1 / 2017-09-11
+==================
 
   * Fix handling of modified headers with invalid dates
   * perf: improve ETag match loop
