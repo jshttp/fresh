@@ -51,19 +51,24 @@ function fresh (reqHeaders, resHeaders) {
   // to support end-to-end reload requests
   // https://tools.ietf.org/html/rfc2616#section-14.9.4
   var cacheControl = reqHeaders['cache-control']
-  if (cacheControl && CACHE_CONTROL_NO_CACHE_REGEXP.test(cacheControl)) {
+  if (cacheControl && CACHE_CONTROL_NO_CACHE_REGEXP.exec(cacheControl) !== null) {
     return false
   }
 
   // if-none-match
   if (noneMatch && noneMatch !== '*') {
     var etag = resHeaders['etag']
-    var etagStale = !etag || noneMatch.split(TOKEN_LIST_REGEXP).every(function (match) {
-      return match !== etag && match !== 'W/' + etag && 'W/' + match !== etag
-    })
 
-    if (etagStale) {
+    if (!etag) {
       return false
+    }
+
+    var tokenList = noneMatch.split(TOKEN_LIST_REGEXP)
+    for (var i = 0; i < tokenList.length; i++) {
+      var match = tokenList[i]
+      if (match !== etag && match !== 'W/' + etag && 'W/' + match !== etag) {
+        return false
+      }
     }
   }
 
