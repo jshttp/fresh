@@ -107,16 +107,73 @@ describe('fresh(reqHeaders, resHeaders)', function () {
     describe('with invalid If-Modified-Since date', function () {
       it('should be stale', function () {
         var reqHeaders = { 'if-modified-since': 'foo' }
-        var resHeaders = { 'modified-since': 'Sat, 01 Jan 2000 00:00:00 GMT' }
+        var resHeaders = { 'last-modified': 'Sat, 01 Jan 2000 00:00:00 GMT' }
         assert.ok(!fresh(reqHeaders, resHeaders))
       })
     })
 
-    describe('with invalid Modified-Since date', function () {
+    describe('with invalid Last-Modified date', function () {
       it('should be stale', function () {
         var reqHeaders = { 'if-modified-since': 'Sat, 01 Jan 2000 00:00:00 GMT' }
-        var resHeaders = { 'modified-since': 'foo' }
+        var resHeaders = { 'last-modified': 'foo' }
         assert.ok(!fresh(reqHeaders, resHeaders))
+      })
+    })
+
+    describe('with unix epoch (timestamp 0) in If-Modified-Since header', function () {
+      it('should be stale', function () {
+        var reqHeaders = { 'if-modified-since': 'Thu, 01 Jan 1970 00:00:00 GMT' }
+        var resHeaders = { 'last-modified': 'Sat, 01 Jan 2000 00:00:00 GMT' }
+        assert.ok(!fresh(reqHeaders, resHeaders))
+      })
+    })
+
+    describe('with unix epoch (timestamp 0) in Last-Modified header', function () {
+      it('should be fresh', function () {
+        var reqHeaders = { 'if-modified-since': 'Sat, 01 Jan 2000 00:00:00 GMT' }
+        var resHeaders = { 'last-modified': 'Thu, 01 Jan 1970 00:00:00 GMT' }
+        assert.ok(fresh(reqHeaders, resHeaders))
+      })
+    })
+
+    describe('with unix epoch (timestamp 0) in Last-Modified and If-Modified-Since header', function () {
+      it('should be fresh', function () {
+        var reqHeaders = { 'if-modified-since': 'Thu, 01 Jan 1970 00:00:00 GMT' }
+        var resHeaders = { 'last-modified': 'Thu, 01 Jan 1970 00:00:00 GMT' }
+        assert.ok(fresh(reqHeaders, resHeaders))
+      })
+    })
+
+    describe('when Date.parse was monkey patched', function () {
+      var dateParse = Date.parse
+
+      before(function () {
+        Date.parse = function (str) {
+          var date = dateParse(str)
+          // https://www.npmjs.com/package/datejs unconditionally patches Date.parse and returns null instead of NaN
+          // for invalid dates
+          return isNaN(date) ? null : date
+        }
+      })
+
+      after(function () {
+        Date.parse = dateParse
+      })
+
+      describe('with invalid If-Modified-Since date', function () {
+        it('should be stale', function () {
+          var reqHeaders = { 'if-modified-since': 'foo' }
+          var resHeaders = { 'last-modified': 'Sat, 01 Jan 2000 00:00:00 GMT' }
+          assert.ok(!fresh(reqHeaders, resHeaders))
+        })
+      })
+
+      describe('with invalid Last-Modified date', function () {
+        it('should be stale', function () {
+          var reqHeaders = { 'if-modified-since': 'Sat, 01 Jan 2000 00:00:00 GMT' }
+          var resHeaders = { 'last-modified': 'foo' }
+          assert.ok(!fresh(reqHeaders, resHeaders))
+        })
       })
     })
   })
