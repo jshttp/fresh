@@ -1,3 +1,8 @@
+unreleased
+==========
+
+  * Fix regression matching multiple ETags in `If-None-Match`
+
 0.5.1 / 2017-09-11
 ==================
 

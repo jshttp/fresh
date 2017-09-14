@@ -63,12 +63,18 @@ function fresh (reqHeaders, resHeaders) {
       return false
     }
 
+    var etagStale = true
     var matches = noneMatch.split(TOKEN_LIST_REGEXP)
     for (var i = 0; i < matches.length; i++) {
       var match = matches[i]
-      if (match !== etag && match !== 'W/' + etag && 'W/' + match !== etag) {
-        return false
+      if (match === etag || match === 'W/' + etag || 'W/' + match === etag) {
+        etagStale = false
+        break
       }
+    }
+
+    if (etagStale) {
+      return false
     }
   }
 

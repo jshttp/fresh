@@ -28,6 +28,14 @@ describe('fresh(reqHeaders, resHeaders)', function () {
       })
     })
 
+    describe('when at least one matches', function () {
+      it('should be fresh', function () {
+        var reqHeaders = { 'if-none-match': ' "bar" , "foo"' }
+        var resHeaders = { 'etag': '"foo"' }
+        assert.ok(fresh(reqHeaders, resHeaders))
+      })
+    })
+
     describe('when etag is missing', function () {
       it('should be stale', function () {
         var reqHeaders = { 'if-none-match': '"foo"' }
