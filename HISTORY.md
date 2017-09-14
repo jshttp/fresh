@@ -1,5 +1,5 @@
-unreleased
-==========
+0.5.2 / 2017-09-13
+==================
 
   * Fix regression matching multiple ETags in `If-None-Match`
   * perf: improve `If-None-Match` token parsing
