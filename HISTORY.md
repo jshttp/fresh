@@ -1,3 +1,8 @@
+unreleased
+==========
+
+  * Drop support for Node.js below 0.8
+
 0.5.2 / 2017-09-13
 ==================
 
