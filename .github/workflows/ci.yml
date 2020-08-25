@@ -24,6 +24,7 @@ jobs:
         - Node.js 9.x
         - Node.js 10.x
         - Node.js 11.x
+        - Node.js 12.x
 
         include:
         - name: Node.js 0.8
@@ -74,6 +75,9 @@ jobs:
 
         - name: Node.js 11.x
           node-version: "11.15"
+
+        - name: Node.js 12.x
+          node-version: "12.18"
 
     steps:
     - uses: actions/checkout@v2
