@@ -61,12 +61,12 @@ links to further reading on this Safari bug.
 
 ```js
 var reqHeaders = { 'if-none-match': '"foo"' }
-var resHeaders = { 'etag': '"bar"' }
+var resHeaders = { etag: '"bar"' }
 fresh(reqHeaders, resHeaders)
 // => false
 
 var reqHeaders = { 'if-none-match': '"foo"' }
-var resHeaders = { 'etag': '"foo"' }
+var resHeaders = { etag: '"foo"' }
 fresh(reqHeaders, resHeaders)
 // => true
 ```
@@ -95,7 +95,7 @@ var server = http.createServer(function (req, res) {
 
 function isFresh (req, res) {
   return fresh(req.headers, {
-    'etag': res.getHeader('ETag'),
+    etag: res.getHeader('ETag'),
     'last-modified': res.getHeader('Last-Modified')
   })
 }

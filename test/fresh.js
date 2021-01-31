@@ -15,7 +15,7 @@ describe('fresh(reqHeaders, resHeaders)', function () {
     describe('when ETags match', function () {
       it('should be fresh', function () {
         var reqHeaders = { 'if-none-match': '"foo"' }
-        var resHeaders = { 'etag': '"foo"' }
+        var resHeaders = { etag: '"foo"' }
         assert.ok(fresh(reqHeaders, resHeaders))
       })
     })
@@ -23,7 +23,7 @@ describe('fresh(reqHeaders, resHeaders)', function () {
     describe('when ETags mismatch', function () {
       it('should be stale', function () {
         var reqHeaders = { 'if-none-match': '"foo"' }
-        var resHeaders = { 'etag': '"bar"' }
+        var resHeaders = { etag: '"bar"' }
         assert.ok(!fresh(reqHeaders, resHeaders))
       })
     })
@@ -31,7 +31,7 @@ describe('fresh(reqHeaders, resHeaders)', function () {
     describe('when at least one matches', function () {
       it('should be fresh', function () {
         var reqHeaders = { 'if-none-match': ' "bar" , "foo"' }
-        var resHeaders = { 'etag': '"foo"' }
+        var resHeaders = { etag: '"foo"' }
         assert.ok(fresh(reqHeaders, resHeaders))
       })
     })
@@ -47,13 +47,13 @@ describe('fresh(reqHeaders, resHeaders)', function () {
     describe('when ETag is weak', function () {
       it('should be fresh on exact match', function () {
         var reqHeaders = { 'if-none-match': 'W/"foo"' }
-        var resHeaders = { 'etag': 'W/"foo"' }
+        var resHeaders = { etag: 'W/"foo"' }
         assert.ok(fresh(reqHeaders, resHeaders))
       })
 
       it('should be fresh on strong match', function () {
         var reqHeaders = { 'if-none-match': 'W/"foo"' }
-        var resHeaders = { 'etag': '"foo"' }
+        var resHeaders = { etag: '"foo"' }
         assert.ok(fresh(reqHeaders, resHeaders))
       })
     })
@@ -61,13 +61,13 @@ describe('fresh(reqHeaders, resHeaders)', function () {
     describe('when ETag is strong', function () {
       it('should be fresh on exact match', function () {
         var reqHeaders = { 'if-none-match': '"foo"' }
-        var resHeaders = { 'etag': '"foo"' }
+        var resHeaders = { etag: '"foo"' }
         assert.ok(fresh(reqHeaders, resHeaders))
       })
 
       it('should be fresh on weak match', function () {
         var reqHeaders = { 'if-none-match': '"foo"' }
-        var resHeaders = { 'etag': 'W/"foo"' }
+        var resHeaders = { etag: 'W/"foo"' }
         assert.ok(fresh(reqHeaders, resHeaders))
       })
     })
@@ -75,13 +75,13 @@ describe('fresh(reqHeaders, resHeaders)', function () {
     describe('when * is given', function () {
       it('should be fresh', function () {
         var reqHeaders = { 'if-none-match': '*' }
-        var resHeaders = { 'etag': '"foo"' }
+        var resHeaders = { etag: '"foo"' }
         assert.ok(fresh(reqHeaders, resHeaders))
       })
 
       it('should get ignored if not only value', function () {
         var reqHeaders = { 'if-none-match': '*, "bar"' }
-        var resHeaders = { 'etag': '"foo"' }
+        var resHeaders = { etag: '"foo"' }
         assert.ok(!fresh(reqHeaders, resHeaders))
       })
     })
@@ -133,7 +133,7 @@ describe('fresh(reqHeaders, resHeaders)', function () {
     describe('when both match', function () {
       it('should be fresh', function () {
         var reqHeaders = { 'if-none-match': '"foo"', 'if-modified-since': 'Sat, 01 Jan 2000 01:00:00 GMT' }
-        var resHeaders = { 'etag': '"foo"', 'last-modified': 'Sat, 01 Jan 2000 00:00:00 GMT' }
+        var resHeaders = { etag: '"foo"', 'last-modified': 'Sat, 01 Jan 2000 00:00:00 GMT' }
         assert.ok(fresh(reqHeaders, resHeaders))
       })
     })
@@ -141,7 +141,7 @@ describe('fresh(reqHeaders, resHeaders)', function () {
     describe('when only ETag matches', function () {
       it('should be stale', function () {
         var reqHeaders = { 'if-none-match': '"foo"', 'if-modified-since': 'Sat, 01 Jan 2000 00:00:00 GMT' }
-        var resHeaders = { 'etag': '"foo"', 'last-modified': 'Sat, 01 Jan 2000 01:00:00 GMT' }
+        var resHeaders = { etag: '"foo"', 'last-modified': 'Sat, 01 Jan 2000 01:00:00 GMT' }
         assert.ok(!fresh(reqHeaders, resHeaders))
       })
     })
@@ -149,7 +149,7 @@ describe('fresh(reqHeaders, resHeaders)', function () {
     describe('when only Last-Modified matches', function () {
       it('should be stale', function () {
         var reqHeaders = { 'if-none-match': '"foo"', 'if-modified-since': 'Sat, 01 Jan 2000 01:00:00 GMT' }
-        var resHeaders = { 'etag': '"bar"', 'last-modified': 'Sat, 01 Jan 2000 00:00:00 GMT' }
+        var resHeaders = { etag: '"bar"', 'last-modified': 'Sat, 01 Jan 2000 00:00:00 GMT' }
         assert.ok(!fresh(reqHeaders, resHeaders))
       })
     })
@@ -157,7 +157,7 @@ describe('fresh(reqHeaders, resHeaders)', function () {
     describe('when none match', function () {
       it('should be stale', function () {
         var reqHeaders = { 'if-none-match': '"foo"', 'if-modified-since': 'Sat, 01 Jan 2000 00:00:00 GMT' }
-        var resHeaders = { 'etag': '"bar"', 'last-modified': 'Sat, 01 Jan 2000 01:00:00 GMT' }
+        var resHeaders = { etag: '"bar"', 'last-modified': 'Sat, 01 Jan 2000 01:00:00 GMT' }
         assert.ok(!fresh(reqHeaders, resHeaders))
       })
     })
@@ -173,7 +173,7 @@ describe('fresh(reqHeaders, resHeaders)', function () {
     describe('when ETags match', function () {
       it('should be stale', function () {
         var reqHeaders = { 'cache-control': ' no-cache', 'if-none-match': '"foo"' }
-        var resHeaders = { 'etag': '"foo"' }
+        var resHeaders = { etag: '"foo"' }
         assert.ok(!fresh(reqHeaders, resHeaders))
       })
     })
