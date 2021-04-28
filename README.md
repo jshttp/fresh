@@ -20,8 +20,6 @@ $ npm install fresh
 
 ## API
 
-<!-- eslint-disable no-unused-vars -->
-
 ```js
 var fresh = require('fresh')
 ```
@@ -57,7 +55,7 @@ links to further reading on this Safari bug.
 
 ### API usage
 
-<!-- eslint-disable no-redeclare, no-undef -->
+<!-- eslint-disable no-redeclare -->
 
 ```js
 var reqHeaders = { 'if-none-match': '"foo"' }
