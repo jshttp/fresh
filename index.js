@@ -50,7 +50,7 @@ function fresh (reqHeaders, resHeaders) {
 
   // if-none-match
   if (noneMatch && noneMatch !== '*') {
-    var etag = resHeaders['etag']
+    var etag = resHeaders.etag
 
     if (!etag) {
       return false
