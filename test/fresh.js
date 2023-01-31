@@ -139,10 +139,10 @@ describe('fresh(reqHeaders, resHeaders)', function () {
     })
 
     describe('when only ETag matches', function () {
-      it('should be stale', function () {
+      it('should be fresh', function () {
         var reqHeaders = { 'if-none-match': '"foo"', 'if-modified-since': 'Sat, 01 Jan 2000 00:00:00 GMT' }
         var resHeaders = { 'etag': '"foo"', 'last-modified': 'Sat, 01 Jan 2000 01:00:00 GMT' }
-        assert.ok(!fresh(reqHeaders, resHeaders))
+        assert.ok(fresh(reqHeaders, resHeaders))
       })
     })
 

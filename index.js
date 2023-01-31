@@ -49,26 +49,26 @@ function fresh (reqHeaders, resHeaders) {
   }
 
   // if-none-match
-  if (noneMatch && noneMatch !== '*') {
+  if (noneMatch) {
+    if (noneMatch === '*') {
+      return true
+    }
+
     var etag = resHeaders['etag']
 
     if (!etag) {
       return false
     }
 
-    var etagStale = true
     var matches = parseTokenList(noneMatch)
     for (var i = 0; i < matches.length; i++) {
       var match = matches[i]
       if (match === etag || match === 'W/' + etag || 'W/' + match === etag) {
-        etagStale = false
-        break
+        return true
       }
     }
 
-    if (etagStale) {
-      return false
-    }
+    return false
   }
 
   // if-modified-since
