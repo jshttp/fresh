@@ -6,7 +6,7 @@ on:
 
 jobs:
   test:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-20.04
     strategy:
       matrix:
         name:
@@ -36,51 +36,62 @@ jobs:
         - name: Node.js 0.8
           node-version: "0.8"
           npm-i: mocha@2.5.3
-          npm-rm: istanbul
+          npm-rm: beautify-benchmark benchmark nyc
 
         - name: Node.js 0.10
           node-version: "0.10"
-          npm-i: mocha@3.5.3
+          npm-i: mocha@3.5.3 nyc@10.3.2
+          npm-rm: beautify-benchmark benchmark
 
         - name: Node.js 0.12
           node-version: "0.12"
-          npm-i: mocha@3.5.3
+          npm-i: mocha@3.5.3 nyc@10.3.2
+          npm-rm: beautify-benchmark benchmark
 
         - name: io.js 1.x
           node-version: "1.8"
-          npm-i: mocha@3.5.3
+          npm-i: mocha@3.5.3 nyc@10.3.2
+          npm-rm: beautify-benchmark benchmark
 
         - name: io.js 2.x
           node-version: "2.5"
-          npm-i: mocha@3.5.3
+          npm-i: mocha@3.5.3 nyc@10.3.2
+          npm-rm: beautify-benchmark benchmark
 
         - name: io.js 3.x
           node-version: "3.3"
-          npm-i: mocha@3.5.3
+          npm-i: mocha@3.5.3 nyc@10.3.2
+          npm-rm: beautify-benchmark benchmark
 
         - name: Node.js 4.x
           node-version: "4.9"
-          npm-i: mocha@5.2.0
+          npm-i: mocha@5.2.0 nyc@11.9.0
+          npm-rm: beautify-benchmark benchmark
 
         - name: Node.js 5.x
           node-version: "5.12"
-          npm-i: mocha@5.2.0
+          npm-i: mocha@5.2.0 nyc@11.9.0
+          npm-rm: beautify-benchmark benchmark
 
         - name: Node.js 6.x
           node-version: "6.17"
-          npm-i: mocha@6.2.3
+          npm-i: mocha@6.2.2 nyc@14.1.1
+          npm-rm: beautify-benchmark benchmark
 
         - name: Node.js 7.x
           node-version: "7.10"
-          npm-i: mocha@6.2.3
+          npm-i: mocha@6.2.2 nyc@14.1.1
+          npm-rm: beautify-benchmark benchmark
 
         - name: Node.js 8.x
           node-version: "8.17"
-          npm-i: mocha@7.2.0
+          npm-i: mocha@7.1.2 nyc@14.1.1
+          npm-rm: beautify-benchmark benchmark
 
         - name: Node.js 9.x
           node-version: "9.11"
-          npm-i: mocha@7.2.0
+          npm-i: mocha@7.1.2 nyc@14.1.1
+          npm-rm: beautify-benchmark benchmark
 
         - name: Node.js 10.x
           node-version: "10.24"
@@ -103,13 +114,13 @@ jobs:
           node-version: "15.14"
 
         - name: Node.js 16.x
-          node-version: "16.15"
+          node-version: "16.13"
 
         - name: Node.js 17.x
-          node-version: "17.9"
+          node-version: "17.4"
 
         - name: Node.js 18.x
-          node-version: "18.4"
+          node-version: "18.20"
 
     steps:
     - uses: actions/checkout@v2
@@ -121,18 +132,26 @@ jobs:
         if [[ "${{ matrix.node-version }}" == 0.* && "$(cut -d. -f2 <<< "${{ matrix.node-version }}")" -lt 10 ]]; then
           nvm install --alias=npm 0.10
           nvm use ${{ matrix.node-version }}
-          sed -i '1s;^.*$;'"$(printf '#!%q' "$(nvm which npm)")"';' "$(readlink -f "$(which npm)")"
+          if [[ "$(npm -v)" == 1.1.* ]]; then
+            nvm exec npm npm install -g npm@1.1
+            ln -fs "$(which npm)" "$(dirname "$(nvm which npm)")/npm"
+          else
+            sed -i '1s;^.*$;'"$(printf '#!%q' "$(nvm which npm)")"';' "$(readlink -f "$(which npm)")"
+          fi
           npm config set strict-ssl false
         fi
         dirname "$(nvm which ${{ matrix.node-version }})" >> "$GITHUB_PATH"
 
     - name: Configure npm
-      run: npm config set shrinkwrap false
+      run: |
+        if [[ "$(npm config get package-lock)" == "true" ]]; then
+          npm config set package-lock false
+        else
+          npm config set shrinkwrap false
+        fi
 
     - name: Remove non-test npm modules
-      run: |
-        echo beautify-benchmark benchmark | \
-          xargs -n1 npm rm --silent --save-dev
+      run: npm rm --silent --save-dev csv-parse raw-body stream-to-array
 
     - name: Remove npm module(s) ${{ matrix.npm-rm }}
       run: npm rm --silent --save-dev ${{ matrix.npm-rm }}
@@ -146,8 +165,8 @@ jobs:
       shell: bash
       run: |
         # eslint for linting
-        # - remove on Node.js < 12
-        if [[ "$(cut -d. -f1 <<< "${{ matrix.node-version }}")" -lt 12 ]]; then
+        # - remove on Node.js < 10
+        if [[ "$(cut -d. -f1 <<< "${{ matrix.node-version }}")" -lt 10 ]]; then
           node -pe 'Object.keys(require("./package").devDependencies).join("\n")' | \
             grep -E '^eslint(-|$)' | \
             sort -r | \
@@ -169,7 +188,7 @@ jobs:
     - name: Run tests
       shell: bash
       run: |
-        if npm -ps ls istanbul | grep -q istanbul; then
+        if npm -ps ls nyc | grep -q nyc; then
           npm run test-ci
         else
           npm test
@@ -181,7 +200,7 @@ jobs:
 
     - name: Collect code coverage
       uses: coverallsapp/github-action@master
-      if: steps.list_env.outputs.istanbul != ''
+      if: steps.list_env.outputs.nyc != ''
       with:
         github-token: ${{ secrets.GITHUB_TOKEN }}
         flag-name: run-${{ matrix.test_number }}
@@ -191,8 +210,8 @@ jobs:
     needs: test
     runs-on: ubuntu-latest
     steps:
-    - name: Uploade code coverage
+    - name: Upload code coverage
       uses: coverallsapp/github-action@master
       with:
-        github-token: ${{ secrets.github_token }}
+        github-token: ${{ secrets.GITHUB_TOKEN }}
         parallel-finished: true
