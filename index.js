@@ -59,17 +59,17 @@ function fresh (reqHeaders, resHeaders) {
       return false
     }
 
-    var etagStale = false
+    var etagFresh = false
     var matches = parseTokenList(noneMatch)
     for (var i = 0; i < matches.length; i++) {
       var match = matches[i]
       if (match === etag || match === 'W/' + etag || 'W/' + match === etag) {
-        etagStale = true
+        etagFresh = true
         break
       }
     }
 
-    return etagStale
+    return etagFresh
   }
 
   // if-modified-since
