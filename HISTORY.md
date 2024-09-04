@@ -1,3 +1,7 @@
+unreleased
+==========
+ * Drop support for Node.js <18
+
 1.0.0 - 2024-09-04
 ==========
 
