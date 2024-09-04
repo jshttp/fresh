@@ -1,4 +1,4 @@
-unreleased
+1.0.0 - 2024-09-04
 ==========
 
   * Drop support for Node.js below 0.8
