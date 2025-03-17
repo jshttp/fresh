@@ -39,7 +39,7 @@ to make handling these requests transparent.
 ## Known Issues
 
 This module is designed to only follow the HTTP specifications, not
-to work-around all kinda of client bugs (especially since this module
+to work-around all kinds of client bugs (especially since this module
 typically does not receive enough information to understand what the
 client actually is).
 
