@@ -103,34 +103,24 @@ function parseHttpDate (date) {
  * Parse a HTTP token list.
  *
  * @param {string} str
+ * @returns {Array<string>}
  * @private
  */
 
 function parseTokenList (str) {
-  var end = 0
   var list = []
   var start = 0
+  var len = str.length
 
-  // gather tokens
-  for (var i = 0, len = str.length; i < len; i++) {
-    switch (str.charCodeAt(i)) {
-      case 0x20: /*   */
-        if (start === end) {
-          start = end = i + 1
-        }
-        break
-      case 0x2c: /* , */
-        list.push(str.substring(start, end))
-        start = end = i + 1
-        break
-      default:
-        end = i + 1
-        break
+  for (var i = 0; i <= len; i++) {
+    var charCode = str.charCodeAt(i)
+    if (charCode === 0x20 || charCode === 0x2c || i === len) {
+      if (i > start) {
+        list.push(str.slice(start, i))
+      }
+      start = i + 1
     }
   }
-
-  // final token
-  list.push(str.substring(start, end))
 
   return list
 }
