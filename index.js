@@ -12,7 +12,7 @@
  * @private
  */
 
-var CACHE_CONTROL_NO_CACHE_REGEXP = /(?:^|,)\s*?no-cache\s*?(?:,|$)/
+var CACHE_CONTROL_NO_CACHE_REGEXP = /\bno-cache\b/
 
 /**
  * Module exports.
