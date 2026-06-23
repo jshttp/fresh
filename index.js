@@ -114,6 +114,7 @@ function parseTokenList (str) {
   // gather tokens
   for (var i = 0, len = str.length; i < len; i++) {
     switch (str.charCodeAt(i)) {
+      case 0x09: /* HTAB */
       case 0x20: /*   */
         if (start === end) {
           start = end = i + 1

@@ -34,6 +34,12 @@ describe('fresh(reqHeaders, resHeaders)', function () {
         var resHeaders = { etag: '"foo"' }
         assert.ok(fresh(reqHeaders, resHeaders))
       })
+
+      it('should be fresh when the list is separated with tabs', function () {
+        var reqHeaders = { 'if-none-match': '"bar",\t"foo"' }
+        var resHeaders = { etag: '"foo"' }
+        assert.ok(fresh(reqHeaders, resHeaders))
+      })
     })
 
     describe('when etag is missing', function () {
