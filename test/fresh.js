@@ -184,6 +184,14 @@ describe('fresh(reqHeaders, resHeaders)', function () {
       })
     })
 
+    describe('when directive name is not lowercase', function () {
+      it('should be stale', function () {
+        var reqHeaders = { 'cache-control': ' No-Cache', 'if-none-match': '"foo"' }
+        var resHeaders = { etag: '"foo"' }
+        assert.ok(!fresh(reqHeaders, resHeaders))
+      })
+    })
+
     describe('when unmodified since the date', function () {
       it('should be stale', function () {
         var reqHeaders = { 'cache-control': ' no-cache', 'if-modified-since': 'Sat, 01 Jan 2000 01:00:00 GMT' }
