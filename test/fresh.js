@@ -42,6 +42,26 @@ describe('fresh(reqHeaders, resHeaders)', function () {
       })
     })
 
+    describe('when an entity-tag contains a comma', function () {
+      it('should be fresh on exact match', function () {
+        var reqHeaders = { 'if-none-match': 'W/"foo,bar"' }
+        var resHeaders = { etag: 'W/"foo,bar"' }
+        assert.ok(fresh(reqHeaders, resHeaders))
+      })
+
+      it('should still split on commas outside quotes', function () {
+        var reqHeaders = { 'if-none-match': 'W/"foo,bar", "baz"' }
+        var resHeaders = { etag: '"baz"' }
+        assert.ok(fresh(reqHeaders, resHeaders))
+      })
+
+      it('should be stale when only a split fragment would have matched', function () {
+        var reqHeaders = { 'if-none-match': 'W/"foo,bar"' }
+        var resHeaders = { etag: 'W/"foo' }
+        assert.ok(!fresh(reqHeaders, resHeaders))
+      })
+    })
+
     describe('when etag is missing', function () {
       it('should be stale', function () {
         var reqHeaders = { 'if-none-match': '"foo"' }

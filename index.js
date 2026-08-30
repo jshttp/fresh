@@ -110,10 +110,26 @@ function parseTokenList (str) {
   var end = 0
   var list = []
   var start = 0
+  var inQuotes = false
 
   // gather tokens
   for (var i = 0, len = str.length; i < len; i++) {
-    switch (str.charCodeAt(i)) {
+    var code = str.charCodeAt(i)
+
+    // opaque-tag is DQUOTE *etagc DQUOTE (RFC 9110). etagc includes comma, so
+    // a comma inside quotes is part of the entity-tag, not a list separator.
+    if (code === 0x22) { /* " */
+      inQuotes = !inQuotes
+      end = i + 1
+      continue
+    }
+
+    if (inQuotes) {
+      end = i + 1
+      continue
+    }
+
+    switch (code) {
       case 0x09: /* HTAB */
       case 0x20: /*   */
         if (start === end) {
