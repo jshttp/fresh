@@ -78,6 +78,44 @@ describe('fresh(reqHeaders, resHeaders)', function () {
       })
     })
 
+    describe('when ETag contains a comma', function () {
+      it('should be fresh on exact match', function () {
+        var reqHeaders = { 'if-none-match': '"foo,bar"' }
+        var resHeaders = { etag: '"foo,bar"' }
+        assert.ok(fresh(reqHeaders, resHeaders))
+      })
+
+      it('should be fresh on exact match with whitespace', function () {
+        var reqHeaders = { 'if-none-match': '"foo, bar"' }
+        var resHeaders = { etag: '"foo, bar"' }
+        assert.ok(fresh(reqHeaders, resHeaders))
+      })
+
+      it('should be fresh on weak match', function () {
+        var reqHeaders = { 'if-none-match': 'W/"foo,bar"' }
+        var resHeaders = { etag: '"foo,bar"' }
+        assert.ok(fresh(reqHeaders, resHeaders))
+      })
+
+      it('should be fresh when it is one item in a list', function () {
+        var reqHeaders = { 'if-none-match': '"bar", "foo,bar"' }
+        var resHeaders = { etag: '"foo,bar"' }
+        assert.ok(fresh(reqHeaders, resHeaders))
+      })
+
+      it('should be fresh when a preceding item has a comma', function () {
+        var reqHeaders = { 'if-none-match': '"bar,baz" , "foo"' }
+        var resHeaders = { etag: '"foo"' }
+        assert.ok(fresh(reqHeaders, resHeaders))
+      })
+
+      it('should be stale when the comma item does not match', function () {
+        var reqHeaders = { 'if-none-match': '"foo,bar"' }
+        var resHeaders = { etag: '"foo"' }
+        assert.ok(!fresh(reqHeaders, resHeaders))
+      })
+    })
+
     describe('when * is given', function () {
       it('should be fresh', function () {
         var reqHeaders = { 'if-none-match': '*' }

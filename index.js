@@ -102,6 +102,9 @@ function parseHttpDate (date) {
 /**
  * Parse a HTTP token list.
  *
+ * Entity tags are quoted and may contain commas, which are not separators
+ * when they appear inside the quotes (RFC 9110, section 8.8.3).
+ *
  * @param {string} str
  * @private
  */
@@ -110,19 +113,30 @@ function parseTokenList (str) {
   var end = 0
   var list = []
   var start = 0
+  var quoted = false
 
   // gather tokens
   for (var i = 0, len = str.length; i < len; i++) {
     switch (str.charCodeAt(i)) {
       case 0x09: /* HTAB */
       case 0x20: /*   */
-        if (start === end) {
+        if (quoted) {
+          end = i + 1
+        } else if (start === end) {
           start = end = i + 1
         }
         break
+      case 0x22: /* " */
+        quoted = !quoted
+        end = i + 1
+        break
       case 0x2c: /* , */
-        list.push(str.substring(start, end))
-        start = end = i + 1
+        if (quoted) {
+          end = i + 1
+        } else {
+          list.push(str.substring(start, end))
+          start = end = i + 1
+        }
         break
       default:
         end = i + 1
