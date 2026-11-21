@@ -40,6 +40,18 @@ describe('fresh(reqHeaders, resHeaders)', function () {
         var resHeaders = { etag: '"foo"' }
         assert.ok(fresh(reqHeaders, resHeaders))
       })
+
+      it('should be fresh when the matching ETag is followed by whitespace before a comma', function () {
+        var reqHeaders = { 'if-none-match': '"foo" , "bar"' }
+        var resHeaders = { etag: '"foo"' }
+        assert.ok(fresh(reqHeaders, resHeaders))
+      })
+
+      it('should be fresh when the list has no whitespace after commas', function () {
+        var reqHeaders = { 'if-none-match': '"bar","foo"' }
+        var resHeaders = { etag: '"foo"' }
+        assert.ok(fresh(reqHeaders, resHeaders))
+      })
     })
 
     describe('when etag is missing', function () {
@@ -105,6 +117,12 @@ describe('fresh(reqHeaders, resHeaders)', function () {
     describe('when unmodified since the date', function () {
       it('should be fresh', function () {
         var reqHeaders = { 'if-modified-since': 'Sat, 01 Jan 2000 01:00:00 GMT' }
+        var resHeaders = { 'last-modified': 'Sat, 01 Jan 2000 00:00:00 GMT' }
+        assert.ok(fresh(reqHeaders, resHeaders))
+      })
+
+      it('should be fresh when Last-Modified equals If-Modified-Since', function () {
+        var reqHeaders = { 'if-modified-since': 'Sat, 01 Jan 2000 00:00:00 GMT' }
         var resHeaders = { 'last-modified': 'Sat, 01 Jan 2000 00:00:00 GMT' }
         assert.ok(fresh(reqHeaders, resHeaders))
       })
@@ -190,6 +208,14 @@ describe('fresh(reqHeaders, resHeaders)', function () {
         var resHeaders = { 'last-modified': 'Sat, 01 Jan 2000 00:00:00 GMT' }
         assert.ok(!fresh(reqHeaders, resHeaders))
       })
+    })
+  })
+
+  describe('when requested with Cache-Control without no-cache', function () {
+    it('should not force stale', function () {
+      var reqHeaders = { 'cache-control': 'max-age=0', 'if-none-match': '"foo"' }
+      var resHeaders = { etag: '"foo"' }
+      assert.ok(fresh(reqHeaders, resHeaders))
     })
   })
 })
